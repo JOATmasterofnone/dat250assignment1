@@ -23,6 +23,7 @@ dependencies {
 
     // This dependency is used by the application.
     implementation("com.google.guava:guava:32.1.1-jre")
+    implementation("io.javalin:javalin:5.6.2")
 }
 
 // Apply a specific Java toolchain to ease working on different environments.
@@ -41,3 +42,9 @@ tasks.named<Test>("test") {
     // Use JUnit Platform for unit tests.
     useJUnitPlatform()
 }
+
+// For build.gradle.kts
+tasks.withType<JavaCompile> {
+    options.encoding = "UTF-8"
+}
+

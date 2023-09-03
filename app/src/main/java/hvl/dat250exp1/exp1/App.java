@@ -4,8 +4,17 @@
 package hvl.dat250exp1.exp1;
 
 import io.javalin.Javalin;
+import java.util.logging.Logger;
 
 public class App {
+	
+	private static final Logger logger = Logger.getLogger(App.class.getName());
+    
+	public String getGreeting() {
+		
+		return "Hello Good People! Rashaad is struggling now but it'll be fine";
+	}
+	
 
     private static final String WEBPAGE = "<!DOCTYPE html>\n" +
             "<html lang=\"en\">\n" +
