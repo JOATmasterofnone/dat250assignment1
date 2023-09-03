@@ -48,11 +48,92 @@ public class App {
             "</body>\n" +
             "</html>";
 
-    private static final double IN_TO_METER = 0.0254;
-    private static final double FT_TO_METER = 0.3048;
-    private static final double MI_TO_METER = 1609.344;
+    protected static final double IN_TO_METER = 0.0254;
+    protected static final double FT_TO_METER = 0.3048;
+    protected static final double MI_TO_METER = 1609.344;
 
+    
+    /**
+     * Converts a value from meters to the specified target unit.
+     *
+     * <p>This method performs the unit conversion by multiplying the input value by the appropriate
+     * conversion factor for the target unit. The target unit is specified by the {@code toUnit} parameter.</p>
+     *
+     * @param value    The value in meters to be converted.
+     * @param toUnit   The target unit to which the value should be converted.
+     *                 Acceptable values are "in" for inches, "ft" for feet, "mi" for miles, and "m" for meters.
+     * @return         The value converted to the target unit, or Double.NaN if the target unit is not recognized.
+     */
+    protected static double multiply(double value, String toUnit) {
+    	
+    	double result;
+	    if (toUnit.equals("in")) {
+	    	result = value * IN_TO_METER;
+	    } else if (toUnit.equals("ft")) {
+	    	result = value * FT_TO_METER;
+	    } else if (toUnit.equals("mi")) {
+	    	result = value * MI_TO_METER;
+	    } else if (toUnit.equals("m")) {
+	    	result = value;
+	    } else {
+	    	result = Double.NaN;
+	    }
+	    
+    	return result;
+    }
+    
+    /**
+     * Divides a given value by the conversion constant related to the target unit.
+     * 
+     * <p>This method takes a value assumed to be in meters and converts it to the
+     * target unit specified by the parameter {@code toUnit}. The target unit can be one
+     * of "in" (inches), "ft" (feet), "mi" (miles), or "m" (meters). If the unit is not 
+     * one of these, the method returns {@code Double.NaN}.</p>
+     *
+     * @param value   The value to be converted, assumed to be in meters.
+     * @param toUnit  The unit to convert the value to. Valid values are "in", "ft", "mi", and "m".
+     * @return        The value converted to the target unit, or {@code Double.NaN} if the unit is invalid.
+     */
+    protected static double divide(double value, String toUnit ) {
+    	
+        double result;
+        if (toUnit.equals("in")) {
+            result = value / IN_TO_METER;
+        } else if (toUnit.equals("ft")) {
+            result = value / FT_TO_METER;
+        } else if (toUnit.equals("mi")) {
+            result = value / MI_TO_METER;
+        } else if (toUnit.equals("m")) {
+            result = value;
+        } else {
+            result = Double.NaN;
+        }
+        return result;
 
+    }
+    
+    /**
+     * Converts a value from meters or to meters based on the unit parameters provided.
+     *
+     * <p>This method serves as a wrapper for two other methods: {@code multiply} and {@code divide}.
+     * If the {@code fromUnit} is "m" (meters), the method will call {@code multiply} to convert
+     * the value to the target unit specified by {@code ToUnit}. Otherwise, it assumes that the value
+     * is already in meters and calls {@code divide} to perform the conversion.</p>
+     *
+     * @param value     The numerical value to be converted.
+     * @param fromUnit  The unit from which the value is to be converted. This is only used to check if the value is in meters.
+     * @param ToUnit    The target unit to which the value is to be converted.
+     * @return          The value converted to the target unit.
+     */
+    protected static double convertIt(double value, String fromUnit, String ToUnit) {
+        if (fromUnit.equals("m")) {
+            return multiply(value, ToUnit);
+        } else {
+            return divide(value, ToUnit);
+        }
+    }
+
+    
     public static void main(String[] args) {
         Javalin.create()
                 .get("/", ctx -> {
@@ -62,35 +143,11 @@ public class App {
                     double value = Double.parseDouble(ctx.formParam("value"));
                     String fromUnit = ctx.formParam("sunit");
                     String toUnit = ctx.formParam("tunit");
-                    double inMeters;
-                    if (fromUnit.equals("in")) {
-                        inMeters = value * IN_TO_METER;
-                    } else if (fromUnit.equals("ft")) {
-                        inMeters = value * FT_TO_METER;
-                    } else if (fromUnit.equals("mi")) {
-                        inMeters = value * MI_TO_METER;
-                    } else if (fromUnit.equals("m")) {
-                        inMeters = value;
-                    } else {
-                        inMeters = Double.NaN;
-                    }
-                    double result;
-                    if (toUnit.equals("in")) {
-                        result = inMeters / IN_TO_METER;
-                    } else if (toUnit.equals("ft")) {
-                        result = inMeters / FT_TO_METER;
-                    } else if (toUnit.equals("mi")) {
-                        result = inMeters / MI_TO_METER;
-                    } else if (toUnit.equals("m")) {
-                        result = inMeters;
-                    } else {
-                        result = Double.NaN;
-                    }
+                    double result = convertIt(value, fromUnit, toUnit);
                     ctx.result(Double.toString(result));
                 })
                 .start(9000);
     }
-
 
 }
 

@@ -6,9 +6,44 @@ package hvl.dat250exp1.exp1;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
-class AppTest {
-    @Test void appHasAGreeting() {
+public class AppTest {
+
+    private static final double DELTA = 1e-6;  // tolerance for floating-point comparisons
+    
+    @Test
+    public void testDivideInches() {
+        double result = App.divide(1, "in");
+        assertEquals(1 / App.IN_TO_METER, result, DELTA);
+    }
+
+    @Test
+    public void testDivideFeet() {
+        double result = App.divide(1, "ft");
+        assertEquals(1 / App.FT_TO_METER, result, DELTA);
+    }
+
+    @Test
+    public void testDivideMiles() {
+        double result = App.divide(1, "mi");
+        assertEquals(1 / App.MI_TO_METER, result, DELTA);
+    }
+
+    @Test
+    public void testDivideMeters() {
+        double result = App.divide(1, "m");
+        assertEquals(1, result, DELTA);
+    }
+
+    @Test
+    public void testDivideInvalidUnit() {
+        double result = App.divide(1, "invalid");
+        assertTrue(Double.isNaN(result));
+    }
+
+    @Test 
+    public void appHasAGreeting() {
         App classUnderTest = new App();
         assertNotNull(classUnderTest.getGreeting(), "app should have a greeting");
     }
+
 }
