@@ -5,21 +5,24 @@
 
 ##Technical problems encountered during installation of the environment
 
-Installing Java:
-I initially didn't use 
+Installing Gradle:
+Ubuntu flags new versions of Gradle as potentially dangerous.  So when installing from snap or apt-get, Gradle version 4.4.1 is the latest you can install.  I assume gradle init wizard did not exist in this version.  I eventually decided to install from SDKman.
 
-In order to install SDKman, I needed curl but the Curl installed from snap in ubuntu presented errors, I needed to uninstall and reinstall from it from apt-get.  I learned about the issue on StackOverflow.
-
+Installing SDKman:
+The curl installation from snap in ubuntu presented errors that prevented simple installation of SDKman. The solution was to uninstall and reinstalled curl from apt-get.
     
 
 ##How I validated the environment was working
-1. I used gradlew check to run the test cases
-
-
-
+I confirmed the necessary software and the correct versions installed.
+I confirmed network connection and access to the necessary websites.
+I check the configuration of all the tools for development were correct 
+	(i.e. access tokens, git repo configuration, dockerhub configuration)
 
 ##Pending issues that I didn't manage to solve
-1. The app only converts to meters, nothing more
-2. 
+The app only converts to and from meters, nothing more
+The logger in the app is not used
+The unit tests do not perform negative testing
+The app has no exception handling
+The markdown file is poorly formatted
 
 
